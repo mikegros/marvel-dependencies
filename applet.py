@@ -84,7 +84,7 @@ n_marvel = len(marvel_all)
 #     2 => Parent brings additional context and enjoyment but missing it
 #              will not substantially detract from the movie
 
-edge_color = ["C3", "C2", "C0"]
+edge_color = ["rgb(214,39,40,0.5)", "rgb(44,160,44,0.5)", "rgb(31,119,180,0.5)"]
 
 ###############
 # MCU Movies
@@ -306,36 +306,19 @@ app.layout = html.Div([
     Input('crossfilter-xaxis-column', 'value'),
     Input('crossfilter-yaxis-column', 'value'))
 def update_graph(xaxis_column_name, yaxis_column_name): 
-    edge_x = []
-    edge_y = []
-    edge_c = []
-    edge_w = []
     edge_trace = []
     edge_text  = []
     #for edge in G.edges():
     for movie in graph_dict.keys():
         if len(graph_dict[movie]["parents"]) == 0:
             continue
-        for movie2 in graph_dict[movie]["parents"]:
+        for ii in range(len(graph_dict[movie]["parents"])):
+            movie2 = graph_dict[movie]["parents"][ii]
+            c_ind  = graph_dict[movie]["parent_type"][ii]
             x0, y0 = graph_dict[movie2]['loc']
             x1, y1 = graph_dict[movie]["loc"]
-            edge_x.append(x0)
-            edge_x.append(x1)
-            edge_x.append(None)
-            edge_y.append(y0)
-            edge_y.append(y1)
-            edge_y.append(None)
             edge_text.append(movie2 + " -> " + movie)
-        for col_ind in graph_dict[movie]["parent_type"]:
-            #edge_c.append(edge_color[col_ind])
-            #edge_w.append(0.5 + col_ind)
-            edge_c.append(dict(width=0.5+col_ind, color=edge_color[col_ind]))
-    
-    edge_trace = go.Scatter(
-        x=edge_x, y=edge_y,
-        line=dict(width=1.0, color="blueviolet"),
-        hoverinfo='text',
-        mode='lines')
+            edge_trace.append(go.Scatter(x=[x0,x1],y=[y0,y1], hoverinfo='text', mode='lines',line=dict(width=0.5+2-c_ind, color=edge_color[c_ind])))
     
     node_x = []
     node_y = []
@@ -373,9 +356,9 @@ def update_graph(xaxis_column_name, yaxis_column_name):
     
     node_trace.marker.color = [0.5]*len(graph_dict.keys())
     node_trace.text = node_text
-    edge_trace.text = edge_text
+    # edge_trace.text = edge_text
 
-    fig = go.Figure(data=[edge_trace, node_trace],
+    fig = go.Figure(data=edge_trace + [node_trace],
              layout=go.Layout(
                 title='Network Example',
                 titlefont_size=16,
