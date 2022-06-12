@@ -293,7 +293,7 @@ app.layout = html.Div([
 
         html.Div([
             dcc.Dropdown(
-                ["All"] + marvel_all,
+                ["All"] + mcu_all,
                 "All",
                 id='movie_select',
             )
