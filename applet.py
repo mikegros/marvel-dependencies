@@ -180,7 +180,7 @@ for movie in graph_dict.keys():
     graph_dict[movie]["Format"] = "Movie"
 
 # Thor: Love and Thunder
-# graph_dict["Thor: Love and Thunder"] = {"loc":[2019,-9], "parents":["Avengers: Endgame", "Thor: Ragnarok"], "parent_type":[1, 1], "Released":False, "MCU":True, "Format":"Movie"}
+graph_dict["Thor: Love and Thunder"] = {"loc":[2019,-9], "parents":["Avengers: Endgame", "Thor: Ragnarok"], "parent_type":[1, 1], "Released":False, "MCU":True, "Format":"Movie"}
 
 
 ###############
@@ -277,7 +277,7 @@ app.layout = html.Div([
     html.H1(children='MCU Dependency Graph'),
 
     html.Div(children='''
-        A tool to improve your MCU viewing experience. For any MCU property the graph indicates which other shows or movies would benefit your viewing experience. Select a movie or show from the list below to focus on which other properties matter. This list is currently curated only by the author, so please suggest edits through the github issues here: <contact info to come>.
+        A tool to improve your MCU viewing experience. For any MCU property the graph indicates which other shows or movies would benefit your viewing experience. Select a movie or show from the list below to focus on which other properties matter. This list is currently curated only by the author, so please suggest edits through the github issues here: <contact info to come>. For movies that have not yet or have just released, the dependencies are based on what is likely from the trailers but is meant to avoid any potential spoiler reveals. Take as a grain of salt."
     ''', style={"margin-bottom": "30px", 'fontSize':20}),
 
     html.Div('Red edges indicate critical viewing. This is reserved for movies which are a direct sequal such that the movie is not a complete story without having seen the previous.', 
