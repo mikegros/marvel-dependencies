@@ -153,7 +153,7 @@ graph_dict["Ant-Man and the Wasp"] = {"loc":[2014.5,-5], "parents":["Ant-Man", "
 graph_dict["Captain Marvel"] = {"loc":[2014.5,5], "parents":["Avengers: Infinity War"], "parent_type":[2]}
 
 # Avengers: Endgame
-graph_dict["Avengers: Endgame"] = {"loc":[2015,0], "parents":["The Avengers","Avengers: Age of Ultron", "Captain America: Civil War", "Guardians of the Galaxy Vol. 2", "Black Panther","Thor: Ragnarok", "Doctor Strange", "Spider-Man: Homecoming", "Avengers: Infinity War", "Ant-Man and the Wasp", "Captain Marvel"], "parent_type":[2,2,2,2,2,2,2,2,0,1,1]}
+graph_dict["Avengers: Endgame"] = {"loc":[2015,0], "parents":["The Avengers","Avengers: Age of Ultron", "Captain America: Civil War", "Guardians of the Galaxy Vol. 2", "Black Panther","Thor: Ragnarok", "Doctor Strange", "Spider-Man: Homecoming", "Avengers: Infinity War", "Ant-Man and the Wasp", "Captain Marvel", "Iron Man", "Thor: The Dark World","Captain America: The Winter Soldier"], "parent_type":[2,2,2,2,2,2,2,2,0,1,1,2,2,2]}
 
 # Spider-Man: Far From Home
 graph_dict["Spider-Man: Far From Home"] = {"loc":[2016,-6], "parents":["Avengers: Endgame", "Spider-Man: Homecoming"], "parent_type":[1,1]}
