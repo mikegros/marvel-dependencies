@@ -180,7 +180,7 @@ for movie in graph_dict.keys():
     graph_dict[movie]["Format"] = "Movie"
 
 # Thor: Love and Thunder
-graph_dict["Thor: Love and Thunder"] = {"loc":[2019,-9], "parents":["Avengers: Endgame", "Thor: Ragnarok"], "parent_type":[1, 1], "Released":False, "MCU":True, "Format":"Movie"}
+# graph_dict["Thor: Love and Thunder"] = {"loc":[2019,-9], "parents":["Avengers: Endgame", "Thor: Ragnarok"], "parent_type":[1, 1], "Released":False, "MCU":True, "Format":"Movie"}
 
 
 ###############
@@ -212,6 +212,9 @@ graph_dict["Hawkeye"] = {"loc":[2018,6], "parents":["Avengers: Endgame", "Avenge
 
 # Moon Knight
 graph_dict["Moon Knight"] = {"loc":[2019,7], "parents":[], "parent_type":[], "Released":True, "MCU":True, "Format":"TV"}
+
+# Ms. Marvel
+graph_dict["Ms.Marvel"] = {"loc":[2019,4], "parents":["Captain Marvel", "Avengers: Endgame"], "parent_type":[2,2], "Released":True, "MCU":True, "Format":"TV"}
 
 ################
 # Non-MCU Marvel Movies that impact the MCU
