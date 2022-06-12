@@ -84,7 +84,8 @@ n_marvel = len(marvel_all)
 #     2 => Parent brings additional context and enjoyment but missing it
 #              will not substantially detract from the movie
 
-edge_color = ["rgb(214,39,40,0.5)", "rgb(44,160,44,0.5)", "rgb(31,119,180,0.5)"]
+edge_color = ["rgba(214,39,40,0.8)", "rgba(44,160,44,0.5)", "rgba(31,119,180,0.25)"]
+edge_color = ["rgba(214,39,40,0.8)", "rgba(148,103,189,0.5)", "rgba(31,119,180,0.25)"]
 
 ###############
 # MCU Movies
@@ -195,7 +196,7 @@ graph_dict["Agent Carter"] = {"loc":[2008,5], "parents":["Captain America: The F
 graph_dict["Inhumans"] = {"loc":[2018.75,-3.25], "parents":[], "parent_type":[], "Released":True, "MCU":True, "Format":"TV"}
 
 # WandaVision
-graph_dict["WandaVision"] = {"loc":[2017.75,-2.25], "parents":["Avengers: Infinity War", "Avengers: Endgame"], "parent_type":[1,1], "Released":True, "MCU":True, "Format":"TV"}
+graph_dict["WandaVision"] = {"loc":[2017.75,-2.25], "parents":["Avengers: Age of Ultron","Captain America: Civil War","Avengers: Infinity War", "Avengers: Endgame"], "parent_type":[1,1,1,1], "Released":True, "MCU":True, "Format":"TV"}
 
 # The Falcon and the Winter Soldier
 graph_dict["The Falcon and the Winter Soldier"] = {"loc":[2016.5,9], "parents":["Captain America: The Winter Soldier", "Avengers: Endgame", "Captain America: Civil War"], "parent_type":[1,1,1], "Released":True, "MCU":True, "Format":"TV"}
@@ -270,46 +271,63 @@ graph_dict["Cloak & Dagger"] = {"loc":[2010,9], "parents":[], "parent_type":[], 
 app = Dash(__name__, external_stylesheets=external_stylesheets)
 
 app.layout = html.Div([
+    html.H1(children='MCU Dependency Graph'),
+
+    html.Div(children='''
+        A tool to improve your MCU viewing experience. For any MCU property the graph indicates which other shows or movies would benefit your viewing experience. Select a movie or show from the list below to focus on which other properties matter. This list is currently curated only by the author, so please suggest edits through the github issues here: <contact info to come>.
+    ''', style={"margin-bottom": "30px", 'fontSize':20}),
+
+    html.Div('Red edges indicate critical viewing. This is reserved for movies which are a direct sequal such that the movie is not a complete story without having seen the previous.', 
+        style={'color': '#d62728', 'fontSize': 18, 'text-align': 'center'}),
+    html.Div('Purple edges indicate strongly recommended viewing. The movie can be viewed without seeing the incoming purple edges, but important context or character information is missing.', 
+        style={'color': '#9467bd', 'fontSize': 18, 'text-align': 'center'}),
+    html.Div('Blue edges indicate that the movie references the previous, but they are not necessary viewing. Having seen the blue edges improves the viewing experience but missing them does not sbstantially harm it.', 
+        style={'color': '#1f77b4', 'fontSize': 18, 'text-align': 'center'}),
+
+    html.Div([
+
+        html.Div("Movie: ", style={'fontSize':20}),
+
+        html.Div([
+            dcc.Dropdown(
+                ["All"] + marvel_all,
+                "All",
+                id='movie_select',
+            )
+        ], style={'width': '30%', 'display': 'inline-block'})
+
+        # html.Div([
+        #     dcc.Dropdown(
+        #         ["All"] + marvel_all,
+        #         "All",
+        #         id='crossfilter-yaxis-column'
+        #     )
+        # ], style={'width': '49%', 'float': 'right', 'display': 'inline-block'})
+    ], style={
+        'padding': '10px 5px'
+    }),
 
     html.Div([
         dcc.Graph(
             id='crossfilter-indicator-scatter',
             hoverData={'points': [{'customdata': 'Japan'}]}
         )
-    ], style={'width': '95%', 'display': 'inline-block', 'padding': '0 20'}),
+    ], style={'width': '95%', 'display': 'inline-block'})
 
-    html.Div([
-
-        html.Div([
-            dcc.Dropdown(
-                ["All"] + mcu_all,
-                "All",
-                id='crossfilter-xaxis-column',
-            )
-        ], style={'width': '49%', 'display': 'inline-block'}),
-
-        html.Div([
-            dcc.Dropdown(
-                ["All"] + marvel_all,
-                "All",
-                id='crossfilter-yaxis-column'
-            )
-        ], style={'width': '49%', 'float': 'right', 'display': 'inline-block'})
-    ], style={
-        'padding': '10px 5px'
-    })
 ])
 
 
 @app.callback(
     Output('crossfilter-indicator-scatter', 'figure'),
-    Input('crossfilter-xaxis-column', 'value'),
-    Input('crossfilter-yaxis-column', 'value'))
-def update_graph(xaxis_column_name, yaxis_column_name): 
+    Input('movie_select', 'value'))
+def update_graph(select_name): 
     edge_trace = []
     edge_text  = []
-    #for edge in G.edges():
     for movie in graph_dict.keys():
+        if select_name != "All":
+            if (select_name != movie):# and (movie not in graph_dict[select_name]["parents"]):
+                continue
+            print("Selected: ", select_name, " which is ", movie, " or its parent")
         if len(graph_dict[movie]["parents"]) == 0:
             continue
         for ii in range(len(graph_dict[movie]["parents"])):
@@ -318,12 +336,15 @@ def update_graph(xaxis_column_name, yaxis_column_name):
             x0, y0 = graph_dict[movie2]['loc']
             x1, y1 = graph_dict[movie]["loc"]
             edge_text.append(movie2 + " -> " + movie)
-            edge_trace.append(go.Scatter(x=[x0,x1],y=[y0,y1], hoverinfo='text', mode='lines',line=dict(width=0.5+2-c_ind, color=edge_color[c_ind])))
+            edge_trace.append(go.Scatter(x=[x0,x1],y=[y0,y1], hoverinfo='text', mode='lines',line=dict(width=3.5-c_ind, color=edge_color[c_ind])))
     
     node_x = []
     node_y = []
     # for node in G.nodes():
     for movie in graph_dict.keys():
+        if select_name != "All":
+            if (select_name != movie) and (movie not in graph_dict[select_name]["parents"]):
+                continue
         x, y = graph_dict[movie]['loc']
         node_x.append(x)
         node_y.append(y)
@@ -338,10 +359,10 @@ def update_graph(xaxis_column_name, yaxis_column_name):
             #'Greys' | 'YlGnBu' | 'Greens' | 'YlOrRd' | 'Bluered' | 'RdBu' |
             #'Reds' | 'Blues' | 'Picnic' | 'Rainbow' | 'Portland' | 'Jet' |
             #'Hot' | 'Blackbody' | 'Earth' | 'Electric' | 'Viridis' |
-            colorscale='YlGnBu',
+            #colorscale='YlGnBu',
             reversescale=True,
-            color=[],
-            size=10,
+            color="rgba(255,200,200,1.0)",
+            size=15,
             # colorbar=dict(
             #     thickness=15,
             #     title='Node Connections',
@@ -352,16 +373,19 @@ def update_graph(xaxis_column_name, yaxis_column_name):
 
     node_text = []
     for movie in graph_dict.keys():
+        if select_name != "All":
+            if (select_name != movie) and (movie not in graph_dict[select_name]["parents"]):
+                continue
         node_text.append(movie)
     
-    node_trace.marker.color = [0.5]*len(graph_dict.keys())
+    #node_trace.marker.color = [0.5]*len(graph_dict.keys())
     node_trace.text = node_text
     # edge_trace.text = edge_text
 
     fig = go.Figure(data=edge_trace + [node_trace],
              layout=go.Layout(
-                title='Network Example',
-                titlefont_size=16,
+                #title='Network Example',
+                #titlefont_size=16,
                 showlegend=False,
                 hovermode='closest',
                 margin=dict(b=20,l=5,r=5,t=40),
