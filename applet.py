@@ -379,7 +379,8 @@ def update_graph(select_name):
         if select_name != "All":
             if (select_name != movie) and (movie not in graph_dict[select_name]["parents"]):
                 continue
-        node_text.append(movie)
+        mcu_label = "MCU" if graph_dict[movie]["MCU"] else "Marvel but not MCU"
+        node_text.append(movie + "<br>" + mcu_label + " " + graph_dict[movie]["Format"])
     
     #node_trace.marker.color = [0.5]*len(graph_dict.keys())
     node_trace.text = node_text
