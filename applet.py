@@ -277,14 +277,14 @@ app.layout = html.Div([
     html.H1(children='MCU Dependency Graph'),
 
     html.Div(children='''
-        A tool to improve your MCU viewing experience. For any MCU property the graph indicates which other shows or movies would benefit your viewing experience. Select a movie or show from the list below to focus on which other properties matter. This list is currently curated only by the author, so please suggest edits through the github issues here: <contact info to come>. For movies that have not yet or have just released, the dependencies are based on what is likely from the trailers but is meant to avoid any potential spoiler reveals. Take as a grain of salt."
+        A tool to improve your MCU viewing experience. For any MCU property the graph indicates which other shows or movies would benefit your viewing experience. Select a movie or show from the list below to focus on which other properties matter. This list is currently curated only by the author, so please suggest edits through the github issues here: https://github.com/mikegros/marvel-dependencies/issues. For movies that have not yet or have just released, the dependencies are based on what is likely from the trailers but is meant to avoid any potential spoiler reveals. Take as a grain of salt.
     ''', style={"margin-bottom": "30px", 'fontSize':20}),
 
     html.Div('Red edges indicate critical viewing. This is reserved for movies which are a direct sequal such that the movie is not a complete story without having seen the previous.', 
         style={'color': '#d62728', 'fontSize': 18, 'text-align': 'center'}),
     html.Div('Purple edges indicate strongly recommended viewing. The movie can be viewed without seeing the incoming purple edges, but important context or character information is missing.', 
         style={'color': '#9467bd', 'fontSize': 18, 'text-align': 'center'}),
-    html.Div('Blue edges indicate that the movie references the previous, but they are not necessary viewing. Having seen the blue edges improves the viewing experience but missing them does not sbstantially harm it.', 
+    html.Div('Blue edges indicate that the movie references the previous, but they are not necessary viewing. Having seen the blue edges improves the viewing experience but missing them does not substantially harm it.',
         style={'color': '#1f77b4', 'fontSize': 18, 'text-align': 'center'}),
 
     html.Div([
