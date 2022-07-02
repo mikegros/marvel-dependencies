@@ -124,7 +124,7 @@ graph_dict["Guardians of the Galaxy"] = {"loc":[2010.5,4.5], "parents":[], "pare
 graph_dict["Avengers: Age of Ultron"] = {"loc":[2010,0], "parents":["The Avengers", "Captain America: The Winter Soldier", "Iron Man 3"], "parent_type":[1, 2, 2]}
 
 # Ant-Man
-graph_dict["Ant-Man"] = {"loc":[2010,-6], "parents":[], "parent_type":[]}
+graph_dict["Ant-Man"] = {"loc":[2010,-6], "parents":["Captain America: The Winter Soldier"], "parent_type":[2]}
 
 # Captain America: Civil War
 graph_dict["Captain America: Civil War"] = {"loc":[2011,0], "parents":["Avengers: Age of Ultron", "Captain America: The Winter Soldier", "Ant-Man"], "parent_type":[1, 1, 2]}
@@ -145,7 +145,7 @@ graph_dict["Thor: Ragnarok"] = {"loc":[2012.5,-3], "parents":["Thor: The Dark Wo
 graph_dict["Black Panther"] = {"loc":[2012.5,8], "parents":["Captain America: Civil War"], "parent_type":[1]}
 
 # Avengers: Infinity War
-graph_dict["Avengers: Infinity War"] = {"loc":[2014,0], "parents":["The Avengers","Avengers: Age of Ultron", "Captain America: Civil War", "Guardians of the Galaxy Vol. 2", "Black Panther","Thor: Ragnarok", "Doctor Strange", "Spider-Man: Homecoming"], "parent_type":[2,1,1,1,2,2,2,2]}
+graph_dict["Avengers: Infinity War"] = {"loc":[2014,0], "parents":["The Avengers","Avengers: Age of Ultron", "Captain America: Civil War", "Guardians of the Galaxy Vol. 2", "Black Panther","Thor: Ragnarok", "Doctor Strange", "Spider-Man: Homecoming"], "parent_type":[2,2,1,1,2,2,2,2]}
 
 # Ant-Man and the Wasp
 graph_dict["Ant-Man and the Wasp"] = {"loc":[2014.5,-5], "parents":["Ant-Man", "Avengers: Infinity War"], "parent_type":[1, 2]}
@@ -274,10 +274,10 @@ graph_dict["Cloak & Dagger"] = {"loc":[2010,9], "parents":[], "parent_type":[], 
 app = Dash(__name__, external_stylesheets=external_stylesheets)
 
 app.layout = html.Div([
-    html.H1(children='MCU Dependency Graph'),
+    html.H1(children='MCU Dependency Graph', style={"text-align":"center",  "color":"black"}),
 
     html.Div(children='''
-        A tool to improve your MCU viewing experience. For any MCU property the graph indicates which other shows or movies would benefit your viewing experience. Select a movie or show from the list below to focus on which other properties matter. This list is currently curated only by the author, so please suggest edits through the github issues here: https://github.com/mikegros/marvel-dependencies/issues. For movies that have not yet or have just released, the dependencies are based on what is likely from the trailers but is meant to avoid any potential spoiler reveals. Take as a grain of salt.
+        A tool to improve your MCU viewing experience. For any MCU property the graph indicates which other shows or movies would benefit your viewing experience. Select a movie or show from the list below to focus on which other properties matter. This list is currently curated only by the author, so please suggest edits through the github issues at the link at the bottom of the page. For movies that have not yet or have just released, the dependencies are based on what is likely from the trailers but is meant to avoid any potential spoiler reveals. Take as a grain of salt.
     ''', style={"margin-bottom": "30px", 'fontSize':20}),
 
     html.Div('Red edges indicate critical viewing. This is reserved for movies which are a direct sequal such that the movie is not a complete story without having seen the previous.', 
@@ -315,7 +315,12 @@ app.layout = html.Div([
             id='crossfilter-indicator-scatter',
             hoverData={'points': [{'customdata': 'Japan'}]}
         )
-    ], style={'width': '95%', 'display': 'inline-block'})
+    ], style={'width': '95%', 'display': 'inline-block'}),
+
+    html.Div([
+        html.Div("Link to Github Issues: ",style={"width":'20%', "display":"inline"}),
+        dcc.Link("Here", href="https://github.com/mikegros/marvel-dependencies/issues")
+    ])
 
 ])
 
